@@ -1,4 +1,4 @@
-declare type loginResult = {
+declare type LoginResult = {
   /** 用户id */
   id: number
   /** 头像 */
