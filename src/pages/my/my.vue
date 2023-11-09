@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useMemberStore } from '@/stores'
-
 const memberStore = useMemberStore()
 </script>
 
@@ -20,6 +18,4 @@ const memberStore = useMemberStore()
   </view>
 </template>
 
-<style lang="scss">
-//
-</style>
+<style lang="scss"></style>

@@ -13,7 +13,6 @@ const sureToLogin = async () => {
   uni.showLoading({ title: '正在登录', mask: true })
   const { result } = await postLoginWxMinAPI({ code })
   uni.hideLoading()
-
   loginSuccess(result)
 }
 

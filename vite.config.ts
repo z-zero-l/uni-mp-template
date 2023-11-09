@@ -1,8 +1,11 @@
 import { defineConfig } from 'vite'
+// 自动导入Api
+import AutoImport from 'unplugin-auto-import/vite'
+// 导入uni-ui
 import uni from '@dcloudio/vite-plugin-uni'
+// 导入WindiCSS
 import WindiCSS from 'vite-plugin-windicss'
 import MiniProgramTailwind from '@dcasia/mini-program-tailwind-webpack-plugin/rollup'
-import AutoImport from 'unplugin-auto-import/vite' // 自动导入Api
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,7 +31,7 @@ export default defineConfig({
       imports: ['vue', 'uni-app', 'pinia'],
       dts: 'src/types/auto-import.d.ts',
       // 指定文件夹位置， 加 /** 可遍历子目录
-      dirs: ['src/hooks', 'src/stores', 'src/utils/**']
+      dirs: ['src/hooks', 'src/stores', 'src/utils/**', 'src/api/**']
     })
   ]
 })
