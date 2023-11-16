@@ -10,7 +10,6 @@ const orderTypes = [
 ]
 // 获取会员信息
 const memberStore = useMemberStore()
-console.log('memberStore :>> ', memberStore.profile?.avatar)
 </script>
 
 <template>
