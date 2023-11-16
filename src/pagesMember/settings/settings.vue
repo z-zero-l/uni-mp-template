@@ -1,7 +1,5 @@
 <script setup lang="ts">
-//
 const memberStore = useMemberStore()
-
 // 退出登录
 const onLoadout = () => {
   // 弹窗提示
@@ -38,7 +36,7 @@ const onLoadout = () => {
       <navigator hover-class="none" class="item arrow" url=" ">关于</navigator>
     </view>
     <!-- 操作按钮 -->
-    <view class="action">
+    <view class="action" v-if="memberStore.profile">
       <view class="button" @tap="onLoadout">退出登录</view>
     </view>
   </view>

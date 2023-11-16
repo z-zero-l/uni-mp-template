@@ -7,7 +7,8 @@ export function createApp() {
   // 引入pinia状态管理
   app.use(pinia)
   return {
-    app
+    app,
+    pinia
   }
 }
 
