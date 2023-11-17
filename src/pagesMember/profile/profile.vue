@@ -292,6 +292,11 @@ page {
 
   &-button {
     height: 80rpx;
+    background-color: rgb(39, 186, 155);
+    color: #fff;
+    line-height: 80rpx;
+    margin: 20rpx 20rpx 0;
+    border-radius: 40rpx;
   }
 }
 </style>
