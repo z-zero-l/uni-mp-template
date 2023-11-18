@@ -69,9 +69,9 @@ const onRefresherrefresh = async () => {
       class="scroll-view"
       scroll-y
     >
-      <PageSkeleton v-if="isLoading"></PageSkeleton>
+      <PageSkeleton v-if="isLoading" />
       <template v-else>
-        <wSwiper :list="bannerList"></wSwiper>
+        <wSwiper :list="bannerList" />
         <!-- 商品分类 -->
         <CategoryPanel :list="categoryList" />
         <!-- 热门推荐 -->
