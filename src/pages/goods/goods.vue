@@ -38,6 +38,10 @@ const goods = ref<GoodsResult>()
 const getGoodsByIdData = async () => {
   const res = await getGoodsByIdAPI(query.id)
   goods.value = res.result
+  // const i = res.result.skus.map((v) => ({
+  //   sku_name_arr: v.specs
+  // }))
+  // console.log(i)
   // SKU组件所需格式
   localdata.value = {
     _id: res.result.id,
@@ -74,7 +78,7 @@ const onTapImage = (url: string) => {
   })
 }
 
-//uni-ui 弹出层组件 ref
+// uni-ui 弹出层组件 ref
 const popup = ref<{
   open: (type?: UniHelper.UniPopupType) => void
   close: () => void

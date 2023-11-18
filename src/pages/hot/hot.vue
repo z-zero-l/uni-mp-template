@@ -95,7 +95,7 @@ const onScrolltolower = async () => {
           :key="goods.id"
           :url="`/pages/goods/goods?id=${goods.id}`"
         >
-          <image class="thumb" :src="goods.picture"></image>
+          <image class="thumb" :src="goods.picture" />
           <view class="name ellipsis">{{ goods.name }}</view>
           <view class="price">
             <text class="symbol">¥</text>
