@@ -12,8 +12,8 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "我的",
-        "navigationStyle": "custom",
+        "navigationBarTitleText": "首页",
+        "navigationStyle": "custom", // 隐藏默认导航
         "navigationBarTextStyle": "white"
       }
     },

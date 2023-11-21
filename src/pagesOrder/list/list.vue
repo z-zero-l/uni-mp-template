@@ -1,7 +1,134 @@
+<script setup lang="ts">
+// 导入列表组件
+import OrderList from './components/OrderList.vue'
+
+// 获取屏幕边界到安全区域距离
+// const { safeAreaInsets } = uni.getSystemInfoSync()
+
+// tabs 数据
+const orderTabs = ref([
+  { orderState: 0, title: '全部' },
+  { orderState: 1, title: '待付款' },
+  { orderState: 2, title: '待发货' },
+  { orderState: 3, title: '待收货' },
+  { orderState: 4, title: '待评价' }
+])
+// 获取⻚⾯参数
+const query = defineProps<{
+  type: string
+}>()
+
+// ⾼亮下标
+const activeIndex = ref(orderTabs.value.findIndex((v) => v.orderState === Number(query.type)))
+</script>
 <template>
-  <div class="list">list</div>
+  <view class="viewport">
+    <!-- tabs -->
+    <view class="tabs">
+      <text class="item" v-for="(item, index) in orderTabs" :key="item.title" @tap="activeIndex = index">
+        {{ item.title }}
+      </text>
+      <!-- 游标 -->
+      <view class="cursor" :style="{ left: activeIndex * 20 + '%' }"></view>
+    </view>
+    <!-- 滑动容器 -->
+    <swiper class="swiper" :current="activeIndex" @change="activeIndex = $event.detail.current">
+      <!-- 滑动项 -->
+      <swiper-item v-for="item in orderTabs" :key="item.title">
+        <!-- 订单列表 -->
+        <OrderList :order-state="item.orderState" />
+      </swiper-item>
+    </swiper>
+  </view>
 </template>
-
-<script lang="ts" setup></script>
-
-<style lang="scss" scoped></style>
+<style lang="scss">
+page {
+  height: 100%;
+  overflow: hidden;
+}
+.viewport {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+// tabs
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  line-height: 60rpx;
+  margin: 0 10rpx;
+  background-color: #fff;
+  box-shadow: 0 4rpx 6rpx rgba(240, 240, 240, 0.6);
+  position: relative;
+  z-index: 9;
+  .item {
+    flex: 1;
+    text-align: center;
+    padding: 20rpx;
+    font-size: 28rpx;
+    color: #262626;
+  }
+  .cursor {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 20%;
+    height: 6rpx;
+    padding: 0 50rpx;
+    background-color: #27ba9b;
+    /* 过渡效果 */
+    transition: all 0.4s;
+  }
+}
+// swiper
+.swiper {
+  background-color: #f7f7f8;
+}
+// 订单列表
+.orders {
+  .card {
+    min-height: 100rpx;
+    padding: 20rpx;
+    margin: 20rpx 20rpx 0;
+    border-radius: 10rpx;
+    background-color: #fff;
+    &:last-child {
+      padding-bottom: 40rpx;
+    }
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 28rpx;
+    color: #999;
+    margin-bottom: 15rpx;
+    .date {
+      color: #666;
+      flex: 1;
+    }
+    .primary {
+      color: #ff9240;
+    }
+    .icon-delete {
+      line-height: 1;
+      margin-left: 10rpx;
+      padding-left: 10rpx;
+      border-left: 1rpx solid #e3e3e3;
+    }
+  }
+  .goods {
+    display: flex;
+    margin-bottom: 20rpx;
+    .cover {
+      width: 170rpx;
+      height: 170rpx;
+      margin-right: 20rpx;
+      border-radius: 10rpx;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+}
+</style>
