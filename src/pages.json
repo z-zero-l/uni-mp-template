@@ -72,6 +72,12 @@
       "style": {
         "navigationBarTitleText": "PageSkeleton"
       }
+    },
+    {
+      "path": "pages/cart/cart2",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
     }
   ],
   "globalStyle": {
