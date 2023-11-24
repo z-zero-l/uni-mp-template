@@ -16,10 +16,11 @@ const queryParams: Required<OrderListParams> = {
   orderType: props.orderState
 }
 
-// 获取订单列表
-const orderList = ref<OrderItem[]>([])
 // 是否加载中标记，⽤于防⽌滚动触底触发多次请求
 const isLoading = ref(false)
+
+// 获取订单列表
+const orderList = ref<OrderItem[]>([])
 const getMemberOrderData = async () => {
   // 如果数据出于加载中，退出函数
   if (isLoading.value) return
@@ -47,6 +48,7 @@ const getMemberOrderData = async () => {
 onMounted(() => {
   getMemberOrderData()
 })
+
 // 订单⽀付
 const onOrderPay = async (id: string) => {
   if (import.meta.env.DEV) {
@@ -69,20 +71,24 @@ const onOrderPay = async (id: string) => {
   const order = orderList.value.find((v) => v.id === id)
   order!.orderState = OrderState.DaiFaHuo
 }
+
 // 确认收货
 const onOrderConfirm = (id: string) => {
   uni.showModal({
     content: '为保障您的权益，请收到货并确认无误后，再确认收货',
-    success: async (success) => {
-      if (success.confirm) {
-        const res = await putMemberOrderReceiptByIdAPI(id)
-        // 更新订单状态
+    confirmColor: '#27BA9B',
+    success: async (res) => {
+      if (res.confirm) {
+        await putMemberOrderReceiptByIdAPI(id)
+        uni.showToast({ icon: 'success', title: '确认收货成功' })
+        // 确认成功，更新为待评价
         const order = orderList.value.find((v) => v.id === id)
-        order!.orderState = res.result.orderState
+        order!.orderState = OrderState.DaiPingJia
       }
     }
   })
 }
+
 // 删除订单
 const onOrderDelete = (id: string) => {
   uni.showModal({
@@ -98,12 +104,24 @@ const onOrderDelete = (id: string) => {
     }
   })
 }
+
 // 是否分⻚结束
 const isFinish = ref(false)
 // 是否触发下拉刷新
 const isTriggered = ref(false)
 // ⾃定义下拉刷新被触发
-const onRefresherrefresh = async () => {}
+const onRefresherrefresh = async () => {
+  // 开始动画
+  isTriggered.value = true
+  // 重置数据
+  queryParams.page = 1
+  orderList.value = []
+  isFinish.value = false
+  // 加载数据
+  await getMemberOrderData()
+  // 关闭动画
+  isTriggered.value = false
+}
 </script>
 <template>
   <scroll-view
@@ -137,7 +155,7 @@ const onRefresherrefresh = async () => {}
         hover-class="none"
       >
         <view class="cover">
-          <image class="image" mode="aspectFit" :src="item.cover"></image>
+          <image class="image" mode="aspectFit" :src="item.cover" />
         </view>
         <view class="meta">
           <view class="name ellipsis">{{ item.name }}</view>
@@ -148,7 +166,7 @@ const onRefresherrefresh = async () => {}
       <view class="payment">
         <text class="quantity">共{{ order.totalNum }}件商品</text>
         <text>实付</text>
-        <text class="amount"> <text class="symbol">¥</text>{{ order.payMoney }}</text>
+        <text class="amount"><text class="symbol">¥</text>{{ order.payMoney }}</text>
       </view>
       <!-- 订单操作按钮 -->
       <view class="action">
@@ -266,9 +284,53 @@ const onRefresherrefresh = async () => {}
       flex: 1;
       display: flex;
       align-items: center;
+    }
+  }
+
+  .payment {
+    font-size: 26rpx;
+    color: #999;
+    margin-bottom: 20rpx;
+
+    .quantity {
+      margin-right: 10rpx;
+      font-size: 26rpx;
+    }
+
+    .amount {
+      color: #444;
+      font-size: 28rpx;
+      margin-left: 5rpx;
+    }
+  }
+
+  .action {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    padding: 20rpx 0 0;
+    border-top: 1rpx solid #e3e3e3;
+    // background-color: yellow;
+
+    .button {
+      width: 200rpx;
+      height: 60rpx;
+      text-align: center;
       justify-content: center;
-      font-size: 22rpx;
-      color: #333;
+      line-height: 60rpx;
+      margin-left: 20rpx;
+      border-radius: 60rpx;
+      border: 1rpx solid #ccc;
+      font-size: 26rpx;
+      color: #444;
+    }
+    .secondary {
+      color: #27ba9b;
+      border-color: #27ba9b;
+    }
+    .primary {
+      color: #fff;
+      background-color: #27ba9b;
     }
   }
 }

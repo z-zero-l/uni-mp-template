@@ -38,16 +38,6 @@ const openSkuPopup = (val: SkuMode) => {
 const goods = ref<GoodsResult>()
 const getGoodsByIdData = async () => {
   const res = await getGoodsByIdAPI(query.id)
-  // skus处理
-  // for (var i = 0; i < res.result.skus.length; i++) {
-  //   const lists = res.result.skus[i].specs.split('}, {')
-  //   for (var j = 0; j < lists.length; i++) {
-  //     const list = lists[j].replace(': ', '').slice(2, -2).split('"')
-  //     const map = { name: list[3], valueName: list[list.length - 2] }
-  //     res.result.skus[i].specs.push(map)
-  //     console.log(res.result.skus)
-  //   }
-  // }
   goods.value = res.result
 
   // SKU组件所需格式
