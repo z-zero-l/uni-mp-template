@@ -16,6 +16,7 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 const showCartList = ref<boolean>(true)
 
 const memberStore = useMemberStore()
+
 //获取购物车数据
 const cartList = ref<CartItem[]>([])
 const getMemberCartData = async () => {
