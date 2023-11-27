@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 导入列表组件
 import OrderList from './components/OrderList.vue'
+import Guess from '@/components/guess/Guess.vue'
 
 // 获取⻚⾯参数
 const query = defineProps<{
@@ -18,25 +19,34 @@ const orderTabs = ref([
 
 // ⾼亮下标
 const activeIndex = ref(orderTabs.value.findIndex((v) => v.orderState === Number(query.type)))
+
+// 猜你喜欢
+const { guessRef, onScrolltolower } = useGuessList()
 </script>
 <template>
   <view class="viewport">
-    <!-- tabs -->
-    <view class="tabs">
-      <text class="item" v-for="(item, index) in orderTabs" :key="item.title" @tap="activeIndex = index">
-        {{ item.title }}
-      </text>
-      <!-- 游标 -->
-      <view class="cursor" :style="{ left: activeIndex * 20 + '%' }"></view>
-    </view>
-    <!-- 滑动容器 -->
-    <swiper class="swiper" :current="activeIndex" @change="activeIndex = $event.detail.current">
-      <!-- 滑动项 -->
-      <swiper-item v-for="item in orderTabs" :key="item.title">
-        <!-- 订单列表 -->
-        <OrderList :order-state="item.orderState" />
-      </swiper-item>
-    </swiper>
+    <!-- 滚动容器 -->
+    <scroll-view refresher-enabled @scrolltolower="onScrolltolower" class="scroll-view" scroll-y>
+      <!-- tabs -->
+      <view class="tabs">
+        <text class="item" v-for="(item, index) in orderTabs" :key="item.title" @tap="activeIndex = index">
+          {{ item.title }}
+        </text>
+        <!-- 游标 -->
+        <view class="cursor" :style="{ left: activeIndex * 20 + '%' }"></view>
+      </view>
+      <!-- 滑动容器 -->
+      <swiper class="swiper" :current="activeIndex" @change="activeIndex = $event.detail.current">
+        <!-- 滑动项 -->
+        <swiper-item v-for="item in orderTabs" :key="item.title">
+          <!-- 订单列表 -->
+          <OrderList :order-state="item.orderState" />
+        </swiper-item>
+      </swiper>
+
+      <!-- 猜你喜欢 -->
+      <Guess ref="guessRef" />
+    </scroll-view>
   </view>
 </template>
 <style lang="scss">
